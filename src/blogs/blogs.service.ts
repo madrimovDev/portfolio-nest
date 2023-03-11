@@ -2,7 +2,6 @@ import { PrismaService } from './../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
-import { Likes } from '@prisma/client';
 
 @Injectable()
 export class BlogsService {
@@ -13,16 +12,25 @@ export class BlogsService {
     });
   }
   async findAll() {
-    return this.prisma.blog.findMany();
+    return this.prisma.blog.findMany({
+      include: {
+        likes: true,
+        comments: true,
+      },
+    });
   }
   async findOne(id: number) {
     return this.prisma.blog.findUnique({
       where: {
         id,
       },
+      include: {
+        likes: true,
+        comments: true,
+      },
     });
   }
-  update(id: number, updateBlogDto: UpdateBlogDto) {
+  async update(id: number, updateBlogDto: UpdateBlogDto) {
     return this.prisma.blog.update({
       where: {
         id,
@@ -30,36 +38,10 @@ export class BlogsService {
       data: updateBlogDto,
     });
   }
-  remove(id: number) {
+  async remove(id: number) {
     return this.prisma.blog.delete({
       where: {
         id,
-      },
-    });
-  }
-  async liked(id: number, like: Omit<Likes, 'id'>) {
-    return this.prisma.likes.create({
-      data: like,
-      include: {
-        Blog: {
-          where: {
-            id,
-          },
-        },
-      },
-    });
-  }
-  async unLiked(id: number, likeId: number) {
-    return this.prisma.likes.delete({
-      where: {
-        id: likeId,
-      },
-      include: {
-        Blog: {
-          where: {
-            id,
-          },
-        },
       },
     });
   }

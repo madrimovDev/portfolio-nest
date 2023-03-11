@@ -61,13 +61,13 @@ model Comments {
   id      Int    @id @default(autoincrement())
   email   String
   comment String
-  Blog    Blog  @relation(fields: [blogId], references: [id])
+  Blog    Blog   @relation(fields: [blogId], references: [id])
   blogId  Int
 }
 
 model Likes {
   id       Int    @id @default(autoincrement())
-  uniqueId String
-  Blog     Blog?  @relation(fields: [blogId], references: [id])
+  uniqueId String @unique
+  Blog     Blog   @relation(fields: [blogId], references: [id])
   blogId   Int
 }
