@@ -6,9 +6,17 @@ import { UpdateBlogDto } from './dto/update-blog.dto';
 @Injectable()
 export class BlogsService {
   constructor(private prisma: PrismaService) {}
-  async create(createBlogDto: CreateBlogDto) {
+  async create(createBlogDto: CreateBlogDto, imgPath: string) {
     return this.prisma.blog.create({
-      data: createBlogDto,
+      data: {
+        title: createBlogDto.title,
+        content: createBlogDto.title,
+        img: {
+          create: {
+            src: imgPath,
+          },
+        },
+      },
     });
   }
   async findAll() {
@@ -16,6 +24,7 @@ export class BlogsService {
       include: {
         likes: true,
         comments: true,
+        img: true,
       },
     });
   }
