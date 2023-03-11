@@ -16,6 +16,7 @@ model User {
   lastname    String
   info        String
   description String
+  img         String
 }
 
 model Skills {
@@ -32,12 +33,19 @@ model Bio {
 }
 
 model Works {
-  id     Int     @id @default(autoincrement())
-  img    String
+  id     Int           @id @default(autoincrement())
+  img    WorksImages[]
   title  String
   source String
   icon   String?
   stack  Stack[]
+}
+
+model WorksImages {
+  id      Int    @id @default(autoincrement())
+  src     String
+  Works   Works  @relation(fields: [worksId], references: [id])
+  worksId Int
 }
 
 model Stack {
@@ -50,11 +58,19 @@ model Stack {
 }
 
 model Blog {
-  id       Int        @id @default(autoincrement())
+  id       Int          @id @default(autoincrement())
   title    String
   content  String
+  img      BlogImages[]
   likes    Likes[]
   comments Comments[]
+}
+
+model BlogImages {
+  id     Int    @id @default(autoincrement())
+  src    String
+  Blog   Blog   @relation(fields: [blogId], references: [id])
+  blogId Int
 }
 
 model Comments {

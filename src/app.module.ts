@@ -8,7 +8,14 @@ import { LikesModule } from './likes/likes.module';
 import { CommentsModule } from './comments/comments.module';
 
 @Module({
-  imports: [UserModule, BioModule, SkillsModule, BlogsModule, LikesModule, CommentsModule],
+  imports: [
+    UserModule,
+    BioModule,
+    SkillsModule,
+    BlogsModule,
+    LikesModule,
+    CommentsModule,
+  ],
   controllers: [AppController],
 })
 export class AppModule {}
