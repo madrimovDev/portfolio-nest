@@ -48,3 +48,26 @@ model Stack {
   Works   Works?  @relation(fields: [worksId], references: [id])
   worksId Int
 }
+
+model Blog {
+  id       Int        @id @default(autoincrement())
+  title    String
+  content  String
+  likes    Likes[]
+  comments Comments[]
+}
+
+model Comments {
+  id      Int    @id @default(autoincrement())
+  email   String
+  comment String
+  Blog    Blog  @relation(fields: [blogId], references: [id])
+  blogId  Int
+}
+
+model Likes {
+  id       Int    @id @default(autoincrement())
+  uniqueId String
+  Blog     Blog?  @relation(fields: [blogId], references: [id])
+  blogId   Int
+}
