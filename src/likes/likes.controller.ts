@@ -1,4 +1,4 @@
-import { LikesParams } from './interfaces/params.interface';
+import { LikesParams } from './interfaces/likes-params.interface';
 import {
   Controller,
   Get,
