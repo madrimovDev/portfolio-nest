@@ -27,6 +27,7 @@
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.0.0",
     "@prisma/client": "^4.11.0",
+    "@types/uuid": "^9.0.1",
     "cookie-parser": "^1.4.6",
     "joi": "^17.8.3",
     "passport": "^0.6.0",
@@ -34,7 +35,8 @@
     "passport-local": "^1.0.0",
     "prisma": "^4.11.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

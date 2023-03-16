@@ -12,6 +12,8 @@ import { BlogsController } from './blogs/blogs.controller';
 import { BioController } from './bio/bio.controller';
 import { UserController } from './user/user.controller';
 import { SkillsController } from './skills/skills.controller';
+import { HeroModule } from './hero/hero.module';
+import { SkillsModule } from './skills/skills.module';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { SkillsController } from './skills/skills.controller';
     LikesModule,
     CommentsModule,
     AuthModule,
+    HeroModule,
   ],
   controllers: [AppController],
 })

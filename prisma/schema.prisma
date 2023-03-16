@@ -94,3 +94,10 @@ model Likes {
   blogId   Int
 }
 
+model Hero {
+  id          Int    @id @default(autoincrement())
+  title       String
+  subtitle    String
+  description String
+  img         String
+}
