@@ -19,6 +19,12 @@ model User {
   img         String
 }
 
+model Admin {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+}
+
 model Skills {
   id   Int     @id @default(autoincrement())
   name String
@@ -87,3 +93,4 @@ model Likes {
   Blog     Blog   @relation(fields: [blogId], references: [id])
   blogId   Int
 }
+
