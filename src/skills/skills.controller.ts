@@ -10,7 +10,6 @@ import {
   UseInterceptors,
   UploadedFile,
   BadRequestException,
-  BadGatewayException,
 } from '@nestjs/common';
 import { SkillsService } from './skills.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
