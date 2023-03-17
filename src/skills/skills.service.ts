@@ -2,6 +2,7 @@ import { PrismaService } from './../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
+import * as fs from 'fs';
 
 @Injectable()
 export class SkillsService {
@@ -24,7 +25,7 @@ export class SkillsService {
   async update(
     id: number,
     updateSkillDto: Omit<UpdateSkillDto, 'img'>,
-    iconPath?: string,
+    iconPath: string | undefined,
   ) {
     return this.prisma.skills.update({
       where: {
@@ -39,10 +40,20 @@ export class SkillsService {
   }
 
   async remove(id: number) {
-    return this.prisma.skills.delete({
+    const skill = await this.prisma.skills.delete({
       where: {
         id,
       },
     });
+
+    const filePath = skill.icon;
+
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        throw err;
+      }
+    });
+
+    return skill;
   }
 }

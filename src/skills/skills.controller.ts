@@ -1,4 +1,4 @@
-import { FileInterceptor } from '@nestjs/platform-express';
+import { CustomFileInterceptor } from './../interceptor/custom.fileinterceptor';
 import {
   Controller,
   Get,
@@ -15,36 +15,19 @@ import {
 import { SkillsService } from './skills.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
-import { diskStorage } from 'multer';
-import uuid from 'uuid';
 
 @Controller('skills')
 export class SkillsController {
   constructor(private readonly skillsService: SkillsService) {}
 
   @Post()
-  @UseInterceptors(
-    FileInterceptor('icon', {
-      dest: './uploads',
-      storage: diskStorage({
-        destination: './uploads',
-        filename(req, file, callback) {
-          const title = req.body.title as string;
-          const format = file.originalname.split('.').at(-1) + uuid.v4();
-          const filename =
-            title.split(' ').filter(Boolean).join('-') + '.' + format;
-          callback(null, filename);
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(new CustomFileInterceptor().create())
   async create(
     @Body() createSkillDto: CreateSkillDto,
-    @UploadedFile() icon: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
     try {
-      const skill = await this.skillsService.create(createSkillDto, icon.path);
-
+      const skill = await this.skillsService.create(createSkillDto, image.path);
       return {
         message: 'Created Skill',
         skill,
@@ -63,43 +46,29 @@ export class SkillsController {
         skills,
       };
     } catch (error) {
-      throw new BadGatewayException();
+      throw new BadRequestException();
     }
   }
 
   @Patch(':id')
-  @UseInterceptors(
-    FileInterceptor('icon', {
-      dest: './uploads',
-      storage: diskStorage({
-        destination: './uploads',
-        filename(req, file, callback) {
-          const title = req.body.title as string;
-          const format = file.originalname.split('.').at(-1) + uuid.v4();
-          const filename =
-            title.split(' ').filter(Boolean).join('-') + '.' + format;
-          callback(null, filename);
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(new CustomFileInterceptor().create())
   async update(
     @Param('id') id: string,
     @Body() updateSkillDto: UpdateSkillDto,
-    iconPath?: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
   ) {
     try {
       const skill = await this.skillsService.update(
         +id,
         updateSkillDto,
-        iconPath?.path,
+        image?.path,
       );
       return {
         message: 'Updated skill',
         skill,
       };
     } catch (error) {
-      throw new BadGatewayException();
+      throw new BadRequestException();
     }
   }
 
@@ -112,7 +81,7 @@ export class SkillsController {
         skill,
       };
     } catch (error) {
-      throw new BadGatewayException();
+      throw new BadRequestException();
     }
   }
 }
