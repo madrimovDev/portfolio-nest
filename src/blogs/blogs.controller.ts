@@ -1,3 +1,4 @@
+import { CustomFileInterceptor } from './../interceptor/custom.fileinterceptor';
 import {
   Controller,
   Get,
@@ -24,21 +25,7 @@ export class BlogsController {
   constructor(private readonly blogsService: BlogsService) {}
 
   @Post()
-  @UseInterceptors(
-    FileInterceptor('image', {
-      dest: './uploads',
-      storage: diskStorage({
-        destination: './uploads',
-        filename(req, file, callback) {
-          const title = req.body.title as string;
-          const format = file.originalname.split('.').at(-1);
-          const filename =
-            title.split(' ').filter(Boolean).join('-') + '.' + format;
-          callback(null, filename);
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(new CustomFileInterceptor().create())
   async create(
     @Res() res: Response,
     @Body() createBlogDto: CreateBlogDto,
