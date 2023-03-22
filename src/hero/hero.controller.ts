@@ -13,6 +13,7 @@ import {
   UploadedFile,
   UsePipes,
   BadRequestException,
+  Req,
 } from '@nestjs/common';
 import { HeroService } from './hero.service';
 import { CreateHeroDto, CreateHeroScheme } from './dto/create-hero.dto';
@@ -20,6 +21,7 @@ import { UpdateHeroDto } from './dto/update-hero.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { CustomFileInterceptor } from 'src/helpers/custom-fileinterseptor';
+import { Request } from 'express';
 
 @Controller('hero')
 export class HeroController {
@@ -27,18 +29,16 @@ export class HeroController {
 
   @UseGuards(AuthenticatedGuard)
   @Post()
-  @UsePipes(new HeroPipe(CreateHeroScheme))
   @UseInterceptors(new CustomFileInterceptor().create())
+  @UsePipes(new HeroPipe(CreateHeroScheme))
   async create(
+    @Req() req: Request,
     @Body() createHeroDto: Omit<CreateHeroDto, 'img'>,
     @UploadedFile() img: Express.Multer.File,
   ) {
     try {
-      console.log('body:', createHeroDto, img);
       return await this.heroService.create(createHeroDto, img.path);
     } catch (error) {
-      console.log('error:', error);
-
       throw new BadRequestException(error);
     }
   }

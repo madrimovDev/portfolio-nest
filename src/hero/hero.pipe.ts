@@ -21,5 +21,6 @@ export class HeroPipe implements PipeTransform {
       }
       return result.value;
     }
+    return value;
   }
 }
