@@ -19,6 +19,7 @@ import { CreateHeroDto, CreateHeroScheme } from './dto/create-hero.dto';
 import { UpdateHeroDto } from './dto/update-hero.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { CustomFileInterceptor } from 'src/helpers/custom-fileinterseptor';
 
 @Controller('hero')
 export class HeroController {
@@ -27,24 +28,17 @@ export class HeroController {
   @UseGuards(AuthenticatedGuard)
   @Post()
   @UsePipes(new HeroPipe(CreateHeroScheme))
-  @UseInterceptors(
-    FileInterceptor('img', {
-      dest: './uploads',
-      storage: diskStorage({
-        destination: './uploads',
-        filename(req, file, callback) {
-          callback(null, 1 + file.originalname.split('.')[1]);
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(new CustomFileInterceptor().create())
   async create(
     @Body() createHeroDto: Omit<CreateHeroDto, 'img'>,
     @UploadedFile() img: Express.Multer.File,
   ) {
     try {
-      return this.heroService.create(createHeroDto, img.path);
+      console.log('body:', createHeroDto, img);
+      return await this.heroService.create(createHeroDto, img.path);
     } catch (error) {
+      console.log('error:', error);
+
       throw new BadRequestException(error);
     }
   }
