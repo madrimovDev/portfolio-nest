@@ -17,10 +17,23 @@ model User {
 }
 
 model Hero {
-  id Int @id @default(autoincrement())
-  title String
-  subtitle String
+  id          Int    @id @default(autoincrement())
+  title       String
+  subtitle    String
   description String
-  img String
+  img         String
 }
 
+model Experience {
+  id          Int    @id @default(autoincrement())
+  year        Int
+  description String
+}
+
+model Works {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String
+  source      String
+  img         String
+}
