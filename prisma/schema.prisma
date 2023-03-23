@@ -37,3 +37,27 @@ model Works {
   source      String
   img         String
 }
+
+model Blogs {
+  id       Int        @id @default(autoincrement())
+  title    String
+  content  String
+  img      String
+  likes    Likes[]
+  comments Comments[]
+}
+
+model Likes {
+  id      Int    @id @default(autoincrement())
+  uid     String @unique
+  Blogs   Blogs  @relation(fields: [blogsId], references: [id])
+  blogsId Int
+}
+
+model Comments {
+  id      Int    @id @default(autoincrement())
+  email   String
+  comment String
+  Blogs   Blogs  @relation(fields: [blogsId], references: [id])
+  blogsId Int
+}
