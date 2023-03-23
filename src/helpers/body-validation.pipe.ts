@@ -2,8 +2,8 @@ import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
 import { ObjectSchema } from 'joi';
 
 @Injectable()
-export class HeroPipe implements PipeTransform {
-  constructor(private scheme: ObjectSchema) {}
+export class BodyValidate implements PipeTransform {
+  constructor(private readonly scheme: ObjectSchema) {}
   transform(value: any) {
     const result = this.scheme.validate(value);
     if (result.error) {

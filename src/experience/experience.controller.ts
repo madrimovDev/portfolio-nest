@@ -1,5 +1,4 @@
 import { AuthenticatedGuard } from './../auth/authenticated.guard';
-import { ExperiencePipe } from './experience.pipe';
 import {
   Controller,
   Get,
@@ -18,6 +17,7 @@ import {
   CreateExperienceScheme,
 } from './dto/create-experience.dto';
 import { UpdateExperienceDto } from './dto/update-experience.dto';
+import { BodyValidate } from 'src/helpers/body-validation.pipe';
 
 @Controller('experience')
 export class ExperienceController {
@@ -26,7 +26,7 @@ export class ExperienceController {
   @UseGuards(AuthenticatedGuard)
   @Post()
   async create(
-    @Body(new ExperiencePipe(CreateExperienceScheme))
+    @Body(new BodyValidate(CreateExperienceScheme))
     createExperienceDto: CreateExperienceDto,
   ) {
     try {

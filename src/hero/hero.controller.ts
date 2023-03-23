@@ -1,4 +1,3 @@
-import { HeroPipe } from './hero.pipe';
 import { AuthenticatedGuard } from './../auth/authenticated.guard';
 import {
   Controller,
@@ -17,6 +16,7 @@ import { HeroService } from './hero.service';
 import { CreateHeroDto, CreateHeroScheme } from './dto/create-hero.dto';
 import { UpdateHeroDto } from './dto/update-hero.dto';
 import { CustomFileInterceptor } from 'src/helpers/custom-fileinterseptor';
+import { BodyValidate } from 'src/helpers/body-validation.pipe';
 
 @Controller('hero')
 export class HeroController {
@@ -26,7 +26,7 @@ export class HeroController {
   @Post()
   @UseInterceptors(new CustomFileInterceptor().create())
   async create(
-    @Body(new HeroPipe(CreateHeroScheme))
+    @Body(new BodyValidate(CreateHeroScheme))
     createHeroDto: Omit<CreateHeroDto, 'img'>,
     @UploadedFile() img: Express.Multer.File,
   ) {
