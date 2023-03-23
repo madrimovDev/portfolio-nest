@@ -17,10 +17,47 @@ model User {
 }
 
 model Hero {
-  id Int @id @default(autoincrement())
-  title String
-  subtitle String
+  id          Int    @id @default(autoincrement())
+  title       String
+  subtitle    String
   description String
-  img String
+  img         String
 }
 
+model Experience {
+  id          Int    @id @default(autoincrement())
+  year        Int
+  description String
+}
+
+model Works {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String
+  source      String
+  img         String
+}
+
+model Blogs {
+  id       Int        @id @default(autoincrement())
+  title    String
+  content  String
+  img      String
+  likes    Likes[]
+  comments Comments[]
+}
+
+model Likes {
+  id      Int    @id @default(autoincrement())
+  uid     String @unique
+  Blogs   Blogs  @relation(fields: [blogsId], references: [id])
+  blogsId Int
+}
+
+model Comments {
+  id      Int    @id @default(autoincrement())
+  email   String
+  comment String
+  Blogs   Blogs  @relation(fields: [blogsId], references: [id])
+  blogsId Int
+}
