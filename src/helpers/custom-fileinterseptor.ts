@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
