@@ -1,7 +1,8 @@
 import { PrismaService } from './../prisma/prisma.service';
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateHeroDto } from './dto/create-hero.dto';
 import { UpdateHeroDto } from './dto/update-hero.dto';
+import * as fs from 'fs';
 
 @Injectable()
 export class HeroService {
@@ -35,7 +36,18 @@ export class HeroService {
     });
   }
 
-  remove(id: number) {
-    return this.prisma.hero.delete({ where: { id } });
+  async remove(id: number) {
+    const hero = await this.prisma.hero.delete({ where: { id } });
+
+    const path = hero.img;
+
+    fs.rm(path, (err) => {
+      if (err) {
+        throw new ForbiddenException(err);
+      }
+      console.log('deleted');
+    });
+
+    return hero;
   }
 }

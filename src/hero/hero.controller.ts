@@ -31,24 +31,52 @@ export class HeroController {
     @UploadedFile() img: Express.Multer.File,
   ) {
     try {
-      return await this.heroService.create(createHeroDto, img.path);
+      const result = {
+        message: 'Hero Created',
+        hero: await this.heroService.create(createHeroDto, img.path),
+      };
+      return result;
     } catch (error) {
       throw new BadRequestException(error);
     }
   }
 
   @Get()
-  findAll() {
-    return this.heroService.findAll();
+  async findAll() {
+    return {
+      message: 'First Hero',
+      hero: await this.heroService.findAll(),
+    };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHeroDto: UpdateHeroDto) {
-    return this.heroService.update(+id, updateHeroDto);
+  @UseInterceptors(new CustomFileInterceptor().create())
+  async update(
+    @Param('id') id: string,
+    @Body() updateHeroDto: UpdateHeroDto,
+    img: Express.Multer.File,
+  ) {
+    try {
+      const result = {
+        message: 'Updated',
+        hero: await this.heroService.update(+id, updateHeroDto, img?.path),
+      };
+      return result;
+    } catch (error) {
+      throw new BadRequestException(error);
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.heroService.remove(+id);
+  async remove(@Param('id') id: string) {
+    try {
+      const result = {
+        message: 'Hero Deleted',
+        hero: await this.heroService.remove(+id),
+      };
+      return result;
+    } catch (err) {
+      throw new BadRequestException(err);
+    }
   }
 }
