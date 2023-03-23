@@ -1,5 +1,5 @@
-import { diskStorage } from 'multer';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { HeroPipe } from './hero.pipe';
+import { AuthenticatedGuard } from './../auth/authenticated.guard';
 import {
   Controller,
   Get,
@@ -7,84 +7,48 @@ import {
   Body,
   Patch,
   Param,
+  Delete,
+  UseGuards,
   UseInterceptors,
   UploadedFile,
   BadRequestException,
 } from '@nestjs/common';
 import { HeroService } from './hero.service';
-import { CreateHeroDto } from './dto/create-hero.dto';
+import { CreateHeroDto, CreateHeroScheme } from './dto/create-hero.dto';
 import { UpdateHeroDto } from './dto/update-hero.dto';
+import { CustomFileInterceptor } from 'src/helpers/custom-fileinterseptor';
 
 @Controller('hero')
 export class HeroController {
   constructor(private readonly heroService: HeroService) {}
 
+  @UseGuards(AuthenticatedGuard)
   @Post()
-  @UseInterceptors(
-    FileInterceptor('image', {
-      dest: './uploads',
-      storage: diskStorage({
-        destination: './uploads',
-        filename(req, file, callback) {
-          const title = req.body.title as string;
-          const format = file.originalname.split('.').at(-1);
-          const filename =
-            title.split(' ').filter(Boolean).join('-') + '.' + format;
-          callback(null, filename);
-        },
-      }),
-    }),
-  )
+  @UseInterceptors(new CustomFileInterceptor().create())
   async create(
-    @Body() createHeroDto: CreateHeroDto,
-    @UploadedFile() image: Express.Multer.File,
+    @Body(new HeroPipe(CreateHeroScheme))
+    createHeroDto: Omit<CreateHeroDto, 'img'>,
+    @UploadedFile() img: Express.Multer.File,
   ) {
     try {
-      const hero = await this.heroService.create(createHeroDto, image.path);
-      return {
-        message: 'Hero created',
-        hero,
-      };
+      return await this.heroService.create(createHeroDto, img.path);
     } catch (error) {
-      throw error;
+      throw new BadRequestException(error);
     }
   }
 
   @Get()
-  async findAll() {
-    try {
-      const hero = await this.heroService.find();
-
-      return {
-        message: 'Hero',
-        hero,
-      };
-    } catch (error) {
-      throw new BadRequestException();
-    }
+  findAll() {
+    return this.heroService.findAll();
   }
 
   @Patch(':id')
-  @UseInterceptors(
-    FileInterceptor('image', {
-      dest: './uploads',
-      storage: diskStorage({
-        destination: './uploads',
-        filename(req, file, callback) {
-          const title = req.body.title as string;
-          const format = file.originalname.split('.').at(-1);
-          const filename =
-            title.split(' ').filter(Boolean).join('-') + '.' + format;
-          callback(null, filename);
-        },
-      }),
-    }),
-  )
-  update(
-    @Param('id') id: string,
-    @Body() updateHeroDto: UpdateHeroDto,
-    @UploadedFile() image: Express.Multer.File,
-  ) {
-    return this.heroService.update(+id, updateHeroDto, image?.path);
+  update(@Param('id') id: string, @Body() updateHeroDto: UpdateHeroDto) {
+    return this.heroService.update(+id, updateHeroDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.heroService.remove(+id);
   }
 }
