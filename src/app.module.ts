@@ -7,9 +7,10 @@ import { PrismaModule } from './prisma/prisma.module';
 import { HeroModule } from './hero/hero.module';
 import { ExperienceModule } from './experience/experience.module';
 import { WorksModule } from './works/works.module';
+import { BlogsModule } from './blogs/blogs.module';
 
 @Module({
-  imports: [AuthModule, PrismaModule, HeroModule, ExperienceModule, WorksModule],
+  imports: [AuthModule, PrismaModule, HeroModule, ExperienceModule, WorksModule, BlogsModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
   exports: [PrismaModule],
