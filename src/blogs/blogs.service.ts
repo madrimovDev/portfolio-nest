@@ -14,15 +14,24 @@ export class BlogsService {
         content: createBlogDto.content,
         img: img,
       },
+      include: {
+        likes: true,
+        comments: true,
+      },
     });
   }
 
   async findAll() {
-    return this.prsima.blogs.findMany();
+    return this.prsima.blogs.findMany({
+      include: { likes: true, comments: true },
+    });
   }
 
   async findOne(id: number) {
-    return this.prsima.blogs.findUnique({ where: { id } });
+    return this.prsima.blogs.findUnique({
+      where: { id },
+      include: { comments: true, likes: true },
+    });
   }
 
   async update(id: number, updateBlogDto: UpdateBlogDto, img: string) {
@@ -34,6 +43,10 @@ export class BlogsService {
         title: updateBlogDto.title,
         content: updateBlogDto.content,
         img,
+      },
+      include: {
+        comments: true,
+        likes: true,
       },
     });
   }

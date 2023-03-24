@@ -8,9 +8,10 @@ import { HeroModule } from './hero/hero.module';
 import { ExperienceModule } from './experience/experience.module';
 import { WorksModule } from './works/works.module';
 import { BlogsModule } from './blogs/blogs.module';
+import { LikesModule } from './likes/likes.module';
 
 @Module({
-  imports: [AuthModule, PrismaModule, HeroModule, ExperienceModule, WorksModule, BlogsModule],
+  imports: [AuthModule, PrismaModule, HeroModule, ExperienceModule, WorksModule, BlogsModule, LikesModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
   exports: [PrismaModule],
