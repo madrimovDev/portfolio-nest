@@ -12,7 +12,16 @@ import { LikesModule } from './likes/likes.module';
 import { CommentsModule } from './comments/comments.module';
 
 @Module({
-  imports: [AuthModule, PrismaModule, HeroModule, ExperienceModule, WorksModule, BlogsModule, LikesModule, CommentsModule],
+  imports: [
+    AuthModule,
+    PrismaModule,
+    HeroModule,
+    ExperienceModule,
+    WorksModule,
+    BlogsModule,
+    LikesModule,
+    CommentsModule,
+  ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
   exports: [PrismaModule],
