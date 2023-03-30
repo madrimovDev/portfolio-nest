@@ -13,9 +13,4 @@ export class LikesController {
   ) {
     return this.likesService.create(+blogId, createLikeDto);
   }
-
-  @Delete(':id')
-  remove(@Param() { id }: { blogId: string; id: string }) {
-    return this.likesService.remove(+id);
-  }
 }

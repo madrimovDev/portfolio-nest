@@ -1,6 +1,14 @@
-import { Controller, Post, Body, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
 
 @Controller('blogs/:blogId/comments')
 export class CommentsController {
@@ -14,6 +22,7 @@ export class CommentsController {
     return this.commentsService.create(+blogId, createCommentDto);
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Delete(':id')
   remove(@Param() { id }: { id: string }) {
     return this.commentsService.remove(+id);
