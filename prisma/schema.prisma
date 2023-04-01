@@ -55,9 +55,10 @@ model Likes {
 }
 
 model Comments {
-  id      Int    @id @default(autoincrement())
-  email   String
-  comment String
-  Blogs   Blogs  @relation(fields: [blogsId], references: [id])
-  blogsId Int
+  id        Int     @id @default(autoincrement())
+  email     String
+  comment   String
+  Blogs     Blogs   @relation(fields: [blogsId], references: [id])
+  blogsId   Int
 }
+
