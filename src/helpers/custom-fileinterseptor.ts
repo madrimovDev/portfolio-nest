@@ -1,9 +1,9 @@
+import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { Injectable } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
-import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 
 const fileName = (value: string): string => {
   const uid = uuid().split('-').at(0);
