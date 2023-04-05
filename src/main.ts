@@ -14,7 +14,6 @@ async function bootstrap() {
       'http://localhost:5174',
     ],
     credentials: true,
-    allowedHeaders: '*',
   });
   app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
   app.use(
