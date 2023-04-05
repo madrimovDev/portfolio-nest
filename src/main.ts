@@ -8,7 +8,11 @@ import { join } from 'path';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: [
+      'https://madrimov.uz',
+      'http://localhost:5173',
+      'http://localhost:5173',
+    ],
     credentials: true,
   });
   app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
