@@ -8,6 +8,8 @@ import { WorksModule } from './works/works.module';
 import { BlogsModule } from './blogs/blogs.module';
 import { LikesModule } from './likes/likes.module';
 import { CommentsModule } from './comments/comments.module';
+import { ApiController } from './api/api.controller';
+import { ApiModule } from './api/api.module';
 
 @Module({
   imports: [
@@ -19,8 +21,10 @@ import { CommentsModule } from './comments/comments.module';
     BlogsModule,
     LikesModule,
     CommentsModule,
+    ApiModule,
   ],
   providers: [PrismaService],
   exports: [PrismaModule],
+  controllers: [],
 })
 export class AppModule {}
